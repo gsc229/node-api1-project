@@ -3,7 +3,7 @@ const express = require('express'); //equivalent to import sthg from sthg
 
 const server = express(); // creates a server 
 const db = require('./data/db.js');  // call in the db functions
-
+server.use(express.json());
 //route/request handlers
 server.get('/', (req, res) => {
 
@@ -27,11 +27,25 @@ server.get('/api/users/:id', (req, res) => {
   db
     .findById(id)
     .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ error: 'failed to get user from db' })
+    })
+})
+
+server.post('/api/echo', (req, res) => {
+  const newUser = req.body;
+
+  db
+    .insert(newUser)
+    .then(user => {
       res.json(user);
     })
     .catch(err => {
-      res.send(err);
+      res.status(500).json({ error: "couldn't add new user" })
     })
+
 })
 
 
