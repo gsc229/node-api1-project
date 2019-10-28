@@ -3,7 +3,7 @@ const express = require('express'); //equivalent to import sthg from sthg
 
 const server = express(); // creates a server 
 const db = require('./data/db.js');  // call in the db functions
-server.use(express.json());
+server.use(express.json()); //middleware which allows express to read json
 //route/request handlers
 server.get('/', (req, res) => {
 
@@ -44,6 +44,33 @@ server.post('/api/echo', (req, res) => {
     })
     .catch(err => {
       res.status(500).json({ error: "couldn't add new user" })
+    })
+
+})
+
+server.put('/api/users/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedUser = req.body;
+  db
+    .update(id, updatedUser)
+    .then(user => {
+      res.json(user)
+    })
+    .catch(err => {
+      res.status(500).json({ error: "couldn't update that user" });
+    })
+
+})
+
+server.delete('/api/users/:id', (req, res) => {
+  const id = req.params.id;
+  db
+    .remove(id)
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "couldn't update that user" });
     })
 
 })
