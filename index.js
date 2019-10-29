@@ -1,11 +1,12 @@
 // implement your API here
 const express = require('express'); //equivalent to import sthg from sthg
-const cors = require('cors');
+
 const server = express(); // creates a server 
 const db = require('./data/db.js');  // call in the db functions
 server.use(express.json()); //middleware which allows express to read json
 //route/request handlers
-server.use(cors());
+const cors = require('cors');
+server.use(cors())
 
 console.log("HIIIIIIIIII");
 /* ROUTES  */
@@ -15,7 +16,7 @@ server.get('/', (req, res) => {
 
 })
 
-server.get('/api/users/', (req, res) => {
+server.get('/api/users', (req, res) => {
   db
     .find()
     .then(users => {
